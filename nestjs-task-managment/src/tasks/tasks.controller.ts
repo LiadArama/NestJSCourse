@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param, Query } from '@nestjs/common';
 import { Task } from './tasks.model';
 import { TasksService } from './tasks.service';
+import { CreateTaskDTO } from './dto/create-task.dto';
 
 
 @Controller('tasks')
@@ -11,6 +12,11 @@ export class TasksController {
     @Get()
     public getAllTasks(): Task[]{
         return this.tasksService.getAllTasks();
+    }
+
+    @Get(':id')
+    public getTaskById(@Param('id') id: string): Task{
+        return this.tasksService.getTaskById(id)
     }
 
     // @Post() // ###### ONE WAY TO DO SO is to desctruct the props we want.
@@ -24,9 +30,8 @@ export class TasksController {
     @Post()
     public createTask
     (
-        @Body('title') title: string, 
-        @Body('description') description: string
+        @Body() createTaskDTO: CreateTaskDTO
     ): Task{
-        return this.tasksService.createTask(title, description);
+        return this.tasksService.createTask(createTaskDTO);
     }
 }
