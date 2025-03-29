@@ -25,6 +25,13 @@ export class TasksController {
         return this.tasksService.createTask(createTaskDTO);
     }
 
+    @Delete(':id')
+    public deleteTaskById(
+        @Param('id') id:string
+    ) : void{
+        this.tasksService.deleteTaskById(id);
+    }
+
     // @Get()
     // public getTasks(@Query() filterDto: GetTasksDTO): Task[]{
     //     if(Object.keys(filterDto).length)
@@ -42,20 +49,12 @@ export class TasksController {
 
     // // We can also do:
 
-
-    // @Delete(':id')
-    // public deleteTaskById(
-    //     @Param('id') id:string
-    // ) : void{
-    //     this.tasksService.deleteTaskById(id);
-    // }
-
-    // @Patch(':id/status')
-    // public updateTaskStatusById(
-    //     @Param('id') id:string, 
-    //     @Body() updateTaskStatusDto: UpdateTaskStatusDTO
-    // ) : Task {
-    //     const {status} = updateTaskStatusDto
-    //     return this.tasksService.updateTaskStatusById(id, status);
-    // }
+    @Patch(':id/status')
+    public updateTaskStatusById(
+        @Param('id') id:string, 
+            @Body() updateTaskStatusDto: UpdateTaskStatusDTO
+    ) : Promise<Task> {
+        const {status} = updateTaskStatusDto
+        return this.tasksService.updateTaskStatusById(id, status);
+    }
 }

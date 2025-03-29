@@ -11,48 +11,24 @@ export class TasksService {
     constructor( private tasksRepository: TasksRepository){
     }
     
-    public async getTaskById(id: string): Promise<Task>{
-        const res = await this.tasksRepository.findOne({id});
-        if(!res) throw new NotFoundException(`Task with ID = ${id} Not Found!`);
-        return res;
+    public getTaskById(id:string) : Promise<Task>{
+        return this.tasksRepository.getTaskById(id);
     }
 
-    public async createTask(createTaskDTO: CreateTaskDTO): Promise<Task>{
-        const task = this.tasksRepository.create({
-            ...createTaskDTO,
-            status: TaskStatus.OPEN
-        });
+    public createTask (createTaskDTO: CreateTaskDTO): Promise<Task>{
+        return this.tasksRepository.createTask(createTaskDTO);
+    }
 
-        await this.tasksRepository.save(task);
-        return task;
+    public deleteTaskById(id:string): void{
+        this.tasksRepository.deleteTaskById(id);
     };
-    // private tasks: Task[] = []
 
-    // public getAllTasks(){
-    //     return this.tasks;
-    // };
-
-    // public getTasksWithFilters(filterDto: GetTasksDTO): Task[]{
-    //     const {status, search} = filterDto;
-    //     let tasks = this.getAllTasks();
-    //     if(status)
-    //         tasks = tasks.filter((task)=> task.status === status);
-    //     if(search)
-    //         tasks = tasks.filter((task)=> task.title.includes(search) || task.description.includes(search))
-    //     return tasks;
-    // }
+    public getTasksWithFilters(filterDto: GetTasksDTO): Promise<Task[]>{
+        return this.tasksRepository.getTasksWithFilters(filterDto);
+    }
 
 
-
-
-
-    // public deleteTaskById(id:string): void{
-    //     this.tasks.splice(this.tasks.indexOf(this.getTaskById(id)), 1);
-    // };
-
-    // public updateTaskStatusById(id:string, newStatus: TaskStatus): Task{
-    //     const task = this.getTaskById(id);
-    //     task.status = newStatus;
-    //     return task;
-    // }
+    public updateTaskStatusById(id:string, newStatus: TaskStatus): Promise<Task>{
+        return this.tasksRepository.updateTaskStatusById(id, newStatus);
+    }
 }
